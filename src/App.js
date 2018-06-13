@@ -6,7 +6,7 @@ import './App.css';
 import SearchPage from './components/searchPage'; 
 import ListBooks from './components/listBooks'; 
 
-class BooksApp extends React.Component {
+class BooksApp extends React.PureComponent {
   state = {
     /**
      * TODO: Instead of using this state variable to keep track of which page
@@ -14,8 +14,17 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
+    books: [],
+    shelf:["currentlyReading","wantToRead","read","none"],
     showSearchPage: false
   }
+
+  componentDidMount() {
+    BooksAPI.getAll().then((books) => {
+     this.setState({books})
+    });
+  }
+  
   /*temperory function to handle switching page before using router*/
   handlePage = () => { 
     const newPageState = this.state.showSearchPage;
@@ -23,6 +32,7 @@ class BooksApp extends React.Component {
   }
 
   render() {
+    console.log(this.state.books);
     return (
       <div className="app">
         {this.state.showSearchPage ? (
