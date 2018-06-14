@@ -15,7 +15,21 @@ class BooksApp extends React.PureComponent {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     books: [],
-    shelf:["currentlyReading","wantToRead","read","none"],
+    /*removed none from shelf because it is not a shelf*/
+    shelf:[
+      {
+        title: "Currently Reading",
+        type:  "currentlyReading"
+      },
+      {
+        title: "Want to read",
+        type:  "wantToRead"
+      },
+      {
+        title: "Read",
+        type: "read",
+      }
+    ],
     showSearchPage: false
   }
 
@@ -24,7 +38,7 @@ class BooksApp extends React.PureComponent {
      this.setState({books})
     });
   }
-  
+
   /*temperory function to handle switching page before using router*/
   handlePage = () => { 
     const newPageState = this.state.showSearchPage;
@@ -38,7 +52,7 @@ class BooksApp extends React.PureComponent {
         {this.state.showSearchPage ? (
           <SearchPage hpage={this.handlePage} />
         ) : (
-          <ListBooks hpage={this.handlePage} />
+          <ListBooks hpage={this.handlePage} books={this.state.books} shelf={this.state.shelf}/>
         )}
       </div>
     )

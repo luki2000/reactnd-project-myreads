@@ -1,0 +1,23 @@
+import React from 'react';
+
+//COMPONENTS
+import Book from './book.js';
+
+const BookShelf = (props) => {
+    console.log(props.type);
+    const books = props.books.filter(book => book.shelf === props.type).map((book) => {
+       return <Book key={book.id} bookTitle={book.title} authors={book.authors} image={book.imageLinks.thumbnail}/>;
+    });
+    return (
+        <div className="bookshelf">
+                  <h2 className="bookshelf-title">{props.title}</h2>
+                  <div className="bookshelf-books">
+                    <ol className="books-grid">
+                        {books}
+                    </ol>
+                  </div>
+                </div>
+    );
+};
+
+export default BookShelf;
