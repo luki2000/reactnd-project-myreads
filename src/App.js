@@ -39,6 +39,28 @@ class BooksApp extends React.PureComponent {
     });
   }
 
+  handleChange = (e,bookId) => {
+    const newBooks = this.state.books;
+
+    const movedBook =  newBooks.map(book => {
+      if(book.id === bookId) {
+        book.shelf = e.target.value;
+      }
+      return book;
+    });
+    
+    this.setState({
+      books: movedBook
+    });
+
+    //TODO update API as well
+    //e.target.value is the new shelf
+    /*this.setState({
+
+    })*/
+
+  }
+
   /*temperory function to handle switching page before using router*/
   handlePage = () => { 
     const newPageState = this.state.showSearchPage;
@@ -52,7 +74,7 @@ class BooksApp extends React.PureComponent {
         {this.state.showSearchPage ? (
           <SearchPage hpage={this.handlePage} />
         ) : (
-          <ListBooks hpage={this.handlePage} books={this.state.books} shelf={this.state.shelf}/>
+          <ListBooks hpage={this.handlePage} hchange={this.handleChange} books={this.state.books} shelf={this.state.shelf}/>
         )}
       </div>
     )

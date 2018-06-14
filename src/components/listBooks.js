@@ -6,7 +6,7 @@ import BookShelf from './bookShelf';
 const ListBooks = (props) => {
 
     const shelves = props.shelf.map((shelf,indx) => {
-      return <BookShelf key={indx} title={shelf.title} type={shelf.type} books={props.books} />;
+      return <BookShelf hchange={props.hchange} key={indx} title={shelf.title} type={shelf.type} books={props.books} />;
 
     });
     return (
