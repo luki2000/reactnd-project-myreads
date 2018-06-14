@@ -1,5 +1,5 @@
 import React from 'react';
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI';
 import './App.css';
 
 // COMPONENTS
@@ -35,6 +35,7 @@ class BooksApp extends React.PureComponent {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
+      console.log(books)
      this.setState({books})
     });
   }
@@ -45,6 +46,7 @@ class BooksApp extends React.PureComponent {
     const movedBook =  newBooks.map(book => {
       if(book.id === bookId) {
         book.shelf = e.target.value;
+        BooksAPI.update(book, e.target.value)
       }
       return book;
     });
@@ -52,13 +54,6 @@ class BooksApp extends React.PureComponent {
     this.setState({
       books: movedBook
     });
-
-    //TODO update API as well
-    //e.target.value is the new shelf
-    /*this.setState({
-
-    })*/
-
   }
 
   /*temperory function to handle switching page before using router*/
@@ -72,7 +67,7 @@ class BooksApp extends React.PureComponent {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchPage hpage={this.handlePage} />
+          <SearchPage hpage={this.handlePage} hchange={this.handleChange}/>
         ) : (
           <ListBooks hpage={this.handlePage} hchange={this.handleChange} books={this.state.books} shelf={this.state.shelf}/>
         )}

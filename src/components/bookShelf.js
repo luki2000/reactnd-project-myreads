@@ -1,19 +1,20 @@
 import React from 'react';
+import '../App.css';
 
 //COMPONENTS
 import Book from './book.js';
 
 const BookShelf = (props) => {
-    console.log(props.type);
+  //  console.log(props.type);
     const books = props.books.filter(book => book.shelf === props.type).map((book) => {
        return <Book 
             key={book.id} 
             id={book.id}
             hchange={props.hchange}
-            bookTitle={book.title} 
-            authors={book.authors} 
+            bookTitle={book.title ? book.title : ''} 
+            authors={book.authors ? book.authors : ''} 
             shelf={book.shelf}
-            image={book.imageLinks.thumbnail}
+            image={book.imageLinks.thumbnail ? book.imageLinks.thumbnail : ''}
             />;
     });
     return (
