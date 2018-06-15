@@ -11,35 +11,118 @@ class SearchPage extends React.Component {
 
         this.state = {
             text: '',
-            booksSearchResults: []
+            booksSearchResults: [],
+            error:''
         }
         this.handleInput = this.handleInput.bind(this);
     }
 
-    handleInput(e) {
+      /*handleInput(e) {
         //console.log(BooksAPI.search(e.target.value));
-        
+        let addNoneShelf = [];
         BooksAPI.search(e.target.value).then((booksSearchResults) => {
-            this.setState({booksSearchResults})
+           /* console.log(this.props.books);
+            addNoneShelf = booksSearchResults.map(book => {
+                            book.shelf = 'none';  
+                            return book; 
+                    });
+                    this.setState({booksSearchResults})
+            })*/
+
+            
+            /*
+            this.props.books.forEach(shelfedBook => {
+                        if (book.id === shelfedBook.id) {
+                            book = shelfedBook;
+                            return;
+                        } else {
+                            book.shelf = 'none';  
+                        }
+            */ 
+
+    handleInput(text) { 
+        this.setState({text:text.trim()}, () => {
+            if (this.state.text && this.state.text.length > 1) {
+                if (this.state.text.length % 2 === 0) {
+                    BooksAPI.search(this.state.text).then((booksSearchResults) => {
+
+                        
+                        //TODO filter out duplicate
+                        const filteredOutDuplicates = booksSearchResults.filter(book => {
+                           let duplicate = true;
+                            this.props.books.forEach(sBook => {
+                               
+                            if(sBook.id === book.id) { 
+                                console.log('duplicate');
+                                duplicate = false;
+                            }
+                           });
+                           return duplicate; 
+                        });
+                        console.log('filtered',filteredOutDuplicates);
+                        /*merge library state to shelf*/
+                        this.props.library(filteredOutDuplicates); 
+                        
+                        //TODO Ensure states are the same both pages
+                        this.setState({booksSearchResults});  
+                    }).catch(function(error) {
+                        //this.setState({error});
+                    });
+                }
+            } else {
+                this.setState({booksSearchResults : []}); 
+            }
         });
     }
 
-    render() {
-        console.log(this.state.booksSearchResults);
+    /*componentDidMount() {
+        if(this.state.text.length > 0) {
+            BooksAPI.search(this.state.text).then((booksSearchResults) => {
+                this.setState({booksSearchResults});
+            
+            }).catch(function(error) {
+                this.setState({error});
+            });
+        } else {
+            this.setState({booksSearchResults : []}); 
+        }
+    }*/
 
-        const books = this.state.booksSearchResults.map((book) => {
+    addToShelf() {
+
+    }
+
+    render() {
+       let books = null;
+       console.log(this.props.books);
+
+        books = this.state.booksSearchResults.error ? <p>{this.state.booksSearchResults.error}</p> : this.state.booksSearchResults.map((book) => {
             return <Book 
                  key={book.id} 
                  id={book.id}
                  hchange={this.props.hchange}
                  bookTitle={book.title ? book.title : ''} 
                  authors={book.authors ? book.authors : ''} 
-                 shelf={book.shelf}
+                 shelf={book.shelf = book.shelf ? book.shelf : 'none' }
                  image={book.imageLinks ? book.imageLinks.thumbnail : ''}
                  />;
          });
+       /*if(this.state.booksSearchResults.error) {
+        books = <p>{this.state.booksSearchResults.error}</p>;
+       } else {
+        books = this.state.booksSearchResults.map((book) => {
+            return <Book 
+                 key={book.id} 
+                 id={book.id}
+                 hchange={this.props.hchange}
+                 bookTitle={book.title ? book.title : ''} 
+                 authors={book.authors ? book.authors : ''} 
+                 /*shelf={book.shelf}*/
+                /* image={book.imageLinks ? book.imageLinks.thumbnail : ''}
+                 />;
+         });
 
-
+       }*/
 
         return (
             <div className="search-books">
@@ -54,7 +137,7 @@ class SearchPage extends React.Component {
                         However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                         you don't find a specific author or title. Every search is limited by search terms.
                         */}
-                        <input onChange={this.handleInput} type="text" placeholder="Search by title or author"/>
+                        <input onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
 
                     </div>
                 </div>

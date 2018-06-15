@@ -7,37 +7,48 @@ import SearchPage from './components/searchPage';
 import ListBooks from './components/listBooks'; 
 
 class BooksApp extends React.PureComponent {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    books: [],
-    /*removed none from shelf because it is not a shelf*/
-    shelf:[
-      {
-        title: "Currently Reading",
-        type:  "currentlyReading"
-      },
-      {
-        title: "Want to read",
-        type:  "wantToRead"
-      },
-      {
-        title: "Read",
-        type: "read",
-      }
-    ],
-    showSearchPage: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      /**
+       * TODO: Instead of using this state variable to keep track of which page
+       * we're on, use the URL in the browser's address bar. This will ensure that
+       * users can use the browser's back and forward buttons to navigate between
+       * pages, as well as provide a good URL they can bookmark and share.
+       */
+      books: [],
+      /*removed none from shelf because it is not a shelf*/
+      shelf:[
+        {
+          title: "Currently Reading",
+          type:  "currentlyReading"
+        },
+        {
+          title: "Want to read",
+          type:  "wantToRead"
+        },
+        {
+          title: "Read",
+          type: "read",
+        }
+      ],
+      showSearchPage: false
+    }
+    this.addLibrary = this.addLibrary.bind(this); 
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      console.log(books)
      this.setState({books})
     });
+  }
+
+  addLibrary(library) {
+    console.log(this);
+    const newBooks = this.state.books;
+    const merged = [...newBooks,...library];
+   // console.log('wtf',{...library,...newBooks});
+    this.setState({books: merged});
   }
 
   handleChange = (e,bookId) => {
@@ -63,13 +74,12 @@ class BooksApp extends React.PureComponent {
   }
 
   render() {
-    console.log(this.state.books);
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchPage hpage={this.handlePage} hchange={this.handleChange}/>
+          <SearchPage hpage={this.handlePage} library={this.addLibrary} hchange={this.handleChange} books={this.state.books}/>
         ) : (
-          <ListBooks hpage={this.handlePage} hchange={this.handleChange} books={this.state.books} shelf={this.state.shelf}/>
+          <ListBooks  hpage={this.handlePage} hchange={this.handleChange} books={this.state.books} shelf={this.state.shelf}/>
         )}
       </div>
     )
