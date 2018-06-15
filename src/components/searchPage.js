@@ -49,22 +49,36 @@ class SearchPage extends React.Component {
                         
                         //TODO filter out duplicate
                         const filteredOutDuplicates = booksSearchResults.filter(book => {
-                           let duplicate = true;
+                           let isNotDuplicate = true;
                             this.props.books.forEach(sBook => {
                                
                             if(sBook.id === book.id) { 
                                 console.log('duplicate');
-                                duplicate = false;
+                                isNotDuplicate = false;
                             }
                            });
-                           return duplicate; 
+                           return isNotDuplicate; 
                         });
-                        console.log('filtered',filteredOutDuplicates);
+                        //console.log('filtered',filteredOutDuplicates);
                         /*merge library state to shelf*/
                         this.props.library(filteredOutDuplicates); 
                         
                         //TODO Ensure states are the same both pages
-                        this.setState({booksSearchResults});  
+                        const syncedState = booksSearchResults.map( book => {
+                            this.props.books.forEach(sBook => {
+                               
+                                if(sBook.id === book.id) { 
+                                    book = sBook;
+                                }
+                            });
+                            return book;
+                        });
+
+
+                        //console.log('synced',syncedState);
+
+
+                        this.setState({booksSearchResults: syncedState});  
                     }).catch(function(error) {
                         //this.setState({error});
                     });
