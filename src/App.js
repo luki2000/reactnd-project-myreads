@@ -32,7 +32,7 @@ class BooksApp extends React.Component {
   //load are shelved books
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-     this.setState({books})
+      this.setState({books})
     });
   }
   //function to merge searched books to the main state component 
@@ -59,22 +59,22 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-      <BrowserRouter>
-        <div>
-          <Route path="/" exact render={() => <ListBooks 
-            hchange={this.handleChange} 
-            books={this.state.books} 
-            shelf={this.state.shelf}/>
-        } />
-          <Route path="/search" exact render={() => <SearchPage 
-            addtoshelf={this.addLibrary} 
-            hchange={this.handleChange} 
-            books={this.state.books}/>
-        }/>
-        </div>
-      </BrowserRouter>
+        <BrowserRouter>
+          <div>
+            <Route path="/" exact render={() => <ListBooks 
+              hchange={this.handleChange} 
+              books={this.state.books} 
+              shelf={this.state.shelf}/>
+          } />
+            <Route path="/search" exact render={() => <SearchPage 
+              addtoshelf={this.addLibrary} 
+              hchange={this.handleChange} 
+              books={this.state.books}/>
+          }/>
+          </div>
+        </BrowserRouter>
       </div>
-    )
+    );
   }
 }
 
