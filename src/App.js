@@ -12,7 +12,6 @@ class BooksApp extends React.Component {
     super(props);
     this.state = {
       books: [],
-      /*removed none from shelf because it is not a shelf*/
       shelf:[
         {
           title: "Currently Reading",
@@ -30,19 +29,19 @@ class BooksApp extends React.Component {
     }
     this.addLibrary = this.addLibrary.bind(this); 
   }
-
+  //load are shelved books
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
      this.setState({books})
     });
   }
-
+  //function to merge searched books to the main state component 
   addLibrary(library) {
     const newBooks = this.state.books;
     const merged = [...newBooks,...library];
     this.setState({books: merged});
   }
-
+  //handles the changing of book states
   handleChange = (e,bookId) => {
     const newBooks = this.state.books;
 
@@ -57,21 +56,20 @@ class BooksApp extends React.Component {
       books: movedBook
     });
   }
-
-  /*temperary function to handle switching page before using router*/
-  handlePage = () => { 
-    const newPageState = this.state.showSearchPage;
-    this.setState({ showSearchPage: !newPageState }); 
-  }
-
   render() {
     return (
       <div className="app">
       <BrowserRouter>
         <div>
-          <Route path="/" exact render={() => <ListBooks hchange={this.handleChange} books={this.state.books} shelf={this.state.shelf}/>
+          <Route path="/" exact render={() => <ListBooks 
+            hchange={this.handleChange} 
+            books={this.state.books} 
+            shelf={this.state.shelf}/>
         } />
-          <Route path="/search" exact render={() => <SearchPage library={this.addLibrary} hchange={this.handleChange} books={this.state.books}/>
+          <Route path="/search" exact render={() => <SearchPage 
+            addtoshelf={this.addLibrary} 
+            hchange={this.handleChange} 
+            books={this.state.books}/>
         }/>
         </div>
       </BrowserRouter>

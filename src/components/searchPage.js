@@ -15,7 +15,6 @@ class SearchPage extends React.Component {
             booksSearchResults: [],
             error:''
         }
-        this.error = '';
         this.handleInput = this.handleInput.bind(this);
     }
 
@@ -24,35 +23,13 @@ class SearchPage extends React.Component {
             if (this.state.text && this.state.text.length > 1) {
                 if (this.state.text.length % 2 === 0) {
                     BooksAPI.search(this.state.text).then((booksSearchResults) => {
-                       
-                        //TODO filter out duplicate
-                        const filteredOutDuplicates = booksSearchResults.filter(book => {
-                           let isNotDuplicate = true;
-                            this.props.books.forEach(sBook => {
-                               
-                            if(sBook.id === book.id) { 
-                                console.log('duplicate');
-                                isNotDuplicate = false;
-                            }
-                           });
-                           return isNotDuplicate; 
-                        });
-                        //console.log('filtered',filteredOutDuplicates);
-                        /*merge library state to shelf*/
-                        this.props.library(filteredOutDuplicates); 
-                        
-                        //TODO Ensure states are the same both pages
-                        const syncedState = booksSearchResults.map( book => {
-                            this.props.books.forEach(sBook => {             
-                                if(sBook.id === book.id) { 
-                                    book = sBook;
-                                }
-                            });
-                            return book;
-                        });
-                        this.setState({booksSearchResults: syncedState});  
+        
+                        /*merge library state to shelf after filtering duplicates*/
+                        this.props.addtoshelf(this.filteredOutDuplicates(booksSearchResults,this.props.books)); 
+ 
+                        /*sync library state with shelfed books*/
+                        this.setState({booksSearchResults: this.syncedState(booksSearchResults,this.props.books)});  
                     }).catch((error) => {
-                        console.log(error);
                         this.setState({error})
                     });
                 }
@@ -61,8 +38,34 @@ class SearchPage extends React.Component {
             }
         });
     }
+    //filters out any duplicate books by id before mergng with the main state
+    filteredOutDuplicates(searchedBooks,shelvedBooks) {
+       const result = searchedBooks.filter(book => {
+            let isNotDuplicate = true;
+            shelvedBooks.forEach(sBook => {             
+                if(sBook.id === book.id) { 
+                    isNotDuplicate = false;
+                }
+            });
+            return isNotDuplicate; 
+         });
+         return result;
+    }
+    //syncs the state of books between pages
+    syncedState(searchedBooks,shelvedBooks) {
+        const result = searchedBooks.map( book => {
+            shelvedBooks.forEach(sBook => {             
+                if(sBook.id === book.id) { 
+                    book = sBook;
+                }
+            });
+            return book;
+        });
+        return result;
+    }
+
     render() {
-       let books = null;
+        let books = null;
         books = this.state.error ? <p>No match Found</p> : this.state.booksSearchResults.map((book) => {
             return <Book 
                  key={book.id} 
@@ -74,14 +77,12 @@ class SearchPage extends React.Component {
                  image={book.imageLinks ? book.imageLinks.thumbnail : ''}
                  />;
          });
-
         return (
             <div className="search-books">
                 <div className="search-books-bar">
                     <Link to="/" className="close-search">Close</Link>
                     <div className="search-books-input-wrapper">
                         <input onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
-
                     </div>
                 </div>
                 <div className="search-books-results">

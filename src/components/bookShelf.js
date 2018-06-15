@@ -5,7 +5,6 @@ import '../App.css';
 import Book from './book.js';
 
 const BookShelf = (props) => {
-  //  console.log(props.type);
     const books = props.books.filter(book => book.shelf === props.type).map((book) => {
        return <Book 
             key={book.id} 
