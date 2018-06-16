@@ -22,13 +22,15 @@ class SearchPage extends React.Component {
       this.setState({text:text.toUpperCase().trim()}, () => {
         if (this.state.text && this.state.text.length > 1) {
             BooksAPI.search(this.state.text).then((booksSearchResults) => {
+              //if api call successful set error state to empty
+              this.setState({error:''});
               /*merge library state to shelf after filtering duplicates*/
               this.props.addtoshelf(this.filteredOutDuplicates(booksSearchResults,this.props.books)); 
               /*sync library state with shelfed books*/
               this.setState({booksSearchResults: this.syncedState(booksSearchResults,this.props.books)});  
-                }).catch((error) => {
-                     this.setState({error})
-                   });
+            }).catch((error) => {
+              this.setState({error});
+            });
         } else {
           this.setState({booksSearchResults : [],error:''}); 
         }
@@ -77,7 +79,7 @@ class SearchPage extends React.Component {
           <div className="search-books-bar">
             <Link to="/" className="close-search">Close</Link>
             <div className="search-books-input-wrapper">
-              <DebounceInput debounceTimeout={300} onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
+              <DebounceInput debounceTimeout={150} onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
             </div>
           </div>
           <div className="search-books-results">
