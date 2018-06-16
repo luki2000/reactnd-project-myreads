@@ -1,11 +1,12 @@
 import React from 'react';
 import * as BooksAPI from './BooksAPI';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 // COMPONENTS
 import SearchPage from './components/searchPage'; 
-import ListBooks from './components/listBooks'; 
+import ListBooks from './components/listBooks';
+import ErrorPage from './components/errorpage';
 
 class BooksApp extends React.Component {
   constructor(props) {
@@ -59,18 +60,19 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <BrowserRouter>
-          <div>
-            <Route path="/" exact render={() => <ListBooks 
-              hchange={this.handleChange} 
-              books={this.state.books} 
-              shelf={this.shelf}/>
-          } />
+          <Switch>
             <Route path="/search" exact render={() => <SearchPage 
               addtoshelf={this.addLibrary} 
               hchange={this.handleChange} 
               books={this.state.books}/>
-          }/>
-          </div>
+            }/>
+            <Route path="/" exact render={() => <ListBooks 
+              hchange={this.handleChange} 
+              books={this.state.books} 
+              shelf={this.shelf}/>
+            }/>
+            <Route component={ErrorPage}/>
+          </Switch>
         </BrowserRouter>
       </div>
     );
