@@ -6,7 +6,7 @@
  On the main page you will see a list of books, each categorised under a shelf. You can categorise your books in 3 different types of shelves, either as books you 'Read', books you are 'Currently Reading' or books 'You want to read'. You can change their category by simply clicking on the book's corresponding green button on the bottom right of the book cover image and selecting the desired shelf. You can equally set a book to no shelves by selecting 'none', the book will no longer appear on the main page.
 
 ### Search for a book to track
- You can also search for the library for more books to track. To go to the search page simply click the green button at the bottom right of the page. On the next page to search, start typing away on the search input field at the top of the page. When a search matches you should see a list of books below the input field. You can add any of the books to a shelf in the same manner as you can on the homepage. If you selected a shelf, it should now appear on the homepage. To go back to the homepage simply click the back arrow to the left of the search input field or use the browser to go back. 
+ You can also search for the library for more books to track. To go to the search page simply click the green button at the bottom right of the page. On the next page, to search, start typing away on the search input field at the top of the page. When a search matches you should see a list of books below the input field. You can add any of the books to a shelf in the same manner as you can on the homepage. If you selected a shelf, it should now appear on the homepage. To go back to the homepage simply click the back arrow to the left of the search input field or use the browser to go back. 
 
 ## TL;DR
 
