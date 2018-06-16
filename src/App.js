@@ -26,7 +26,7 @@ class BooksApp extends React.Component {
         title: "Read",
         type: "read",
       }
-    ]
+    ];
     this.addLibrary = this.addLibrary.bind(this); 
   }
   //load are shelved books
@@ -43,19 +43,18 @@ class BooksApp extends React.Component {
   }
   //handles the changing of book states
   handleChange = (e,bookId) => {
-    const newBooks = this.state.books;
-
-    const movedBook =  newBooks.map(book => {
-      if(book.id === bookId) {
-        book.shelf = e.target.value;
-        BooksAPI.update(book, e.target.value)
-      }
-      return book;
-    });
-    this.setState({
-      books: movedBook
-    });
+    const newCategory = e.target.value;
+    this.setState(previousState => ({
+        books : previousState.books.map(book => {
+          if(book.id === bookId) {
+            book['shelf'] = newCategory;
+            BooksAPI.update(book, newCategory);
+          }
+          return book;
+        })
+    }));
   }
+
   render() {
     return (
       <div className="app">
