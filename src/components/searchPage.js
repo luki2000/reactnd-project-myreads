@@ -69,9 +69,9 @@ class SearchPage extends React.Component {
                  id={book.id}
                  hchange={this.props.hchange}
                  bookTitle={book.title ? book.title : ''} 
-                 authors={book.authors ? book.authors : ''} 
+                 authors={book.authors ? book.authors : [] } 
                  shelf={book.shelf = book.shelf ? book.shelf : 'none' }
-                 image={book.imageLinks ? book.imageLinks.thumbnail : ''}
+                 image={book.imageLinks ? book.imageLinks.thumbnail : 'http://via.placeholder.com/128x193?text=No%20Cover'}
                  />;
       });
       return (

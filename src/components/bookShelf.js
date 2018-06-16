@@ -10,10 +10,10 @@ const BookShelf = (props) => {
               key={book.id} 
               id={book.id}
               hchange={props.hchange}
-              bookTitle={book.title ? book.title : ''} 
-              authors={book.authors ? book.authors : ''} 
+              bookTitle={book.title} 
+              authors={book.authors} 
               shelf={book.shelf}
-              image={book.imageLinks.thumbnail ? book.imageLinks.thumbnail : ''}
+              image={book.imageLinks.thumbnail}
                         />;
 });
   return (
