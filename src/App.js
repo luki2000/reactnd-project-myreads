@@ -11,22 +11,22 @@ class BooksApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: [],
-      shelf:[
-        {
-          title: "Currently Reading",
-          type:  "currentlyReading"
-        },
-        {
-          title: "Want to read",
-          type:  "wantToRead"
-        },
-        {
-          title: "Read",
-          type: "read",
-        }
-      ]
+      books: []
     }
+    this.shelf = [
+      {
+        title: "Currently Reading",
+        type:  "currentlyReading"
+      },
+      {
+        title: "Want to read",
+        type:  "wantToRead"
+      },
+      {
+        title: "Read",
+        type: "read",
+      }
+    ]
     this.addLibrary = this.addLibrary.bind(this); 
   }
   //load are shelved books
@@ -64,7 +64,7 @@ class BooksApp extends React.Component {
             <Route path="/" exact render={() => <ListBooks 
               hchange={this.handleChange} 
               books={this.state.books} 
-              shelf={this.state.shelf}/>
+              shelf={this.shelf}/>
           } />
             <Route path="/search" exact render={() => <SearchPage 
               addtoshelf={this.addLibrary} 
