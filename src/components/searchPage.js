@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { DebounceInput } from 'react-debounce-input';
 import * as BooksAPI from '../BooksAPI';
 
 
@@ -20,7 +21,6 @@ class SearchPage extends React.Component {
     handleInput(text) { 
       this.setState({text:text.toUpperCase().trim()}, () => {
         if (this.state.text && this.state.text.length > 1) {
-          if (this.state.text.length % 2 === 0) {
             BooksAPI.search(this.state.text).then((booksSearchResults) => {
               /*merge library state to shelf after filtering duplicates*/
               this.props.addtoshelf(this.filteredOutDuplicates(booksSearchResults,this.props.books)); 
@@ -29,7 +29,6 @@ class SearchPage extends React.Component {
                 }).catch((error) => {
                      this.setState({error})
                    });
-          }
         } else {
           this.setState({booksSearchResults : [],error:''}); 
         }
@@ -78,7 +77,7 @@ class SearchPage extends React.Component {
           <div className="search-books-bar">
             <Link to="/" className="close-search">Close</Link>
             <div className="search-books-input-wrapper">
-              <input onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
+              <DebounceInput debounceTimeout={300} onChange={(e) => this.handleInput(e.target.value)} type="text" placeholder="Search by title or author"/>
             </div>
           </div>
           <div className="search-books-results">
